@@ -38,7 +38,7 @@ clf_cv.fit(x_train,y_train)
 # Function to preprocess input data and make predictions
 def predict_churn(customer_id, name, age, gender, location, subscription_length_months, monthly_bill, total_usage_gb):
     # Create a DataFrame from the input data
-    dct={
+    input_data=pd.DataFrame({
         'Age': [age],
         'Gender_Female': [1 if gender == "Female" else 0],  # One-hot encoding for Gender
         'Gender_Male': [1 if gender == "Male" else 0],
@@ -50,9 +50,8 @@ def predict_churn(customer_id, name, age, gender, location, subscription_length_
         'Subscription_Length_Months': [subscription_length_months],
         'monthly bill': [monthly_bill],
         'Total_usage_GB': [total_usage_gb]
-    }
-    dct = {k:[v] for k,v in dct.items()}  
-    input_data = pd.DataFrame(dct)
+    })
+
     
 # Scale the input data using the same scaler used during training
     scaled_features = scaler.transform(input_data.values)  # Use the pre-fitted scaler
