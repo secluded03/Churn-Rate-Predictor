@@ -23,7 +23,7 @@ Y = train_data['Churn']
 # # Split the dataset into training and testing sets
 # X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
 
-# scaler = StandardScaler()
+scaler = StandardScaler()
 # x_train = scaler.fit_transform(X_train)
 # x_test = scaler.fit_transform(X_test)
 
