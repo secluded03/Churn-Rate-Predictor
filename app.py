@@ -16,23 +16,23 @@ train_data.drop('Name', axis=1, inplace=True)
 one_hot_encoded_data = pd.get_dummies(train_data, columns=['Gender', 'Location'])
 train_data = one_hot_encoded_data
 
-cols = ["Age","Gender_Female","Gender_Male","Location_Houston","Location_New York","Location_Miami","Location_Chicago","Location_Los Angeles","Monthly_Bill","Total_Usage_GB","Subscription_Length_Months"] 
+cols = ["Age","Gender_Female","Gender_Male","Location_Los Angeles","Location_Chicago","Location_New York","Location_Houston","Location_Miami","Subscription_Length_Months","Monthly_Bill","Total_Usage_GB"] 
 X = train_data[cols]
 Y = train_data['Churn']
 
-# Split the dataset into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
+# # Split the dataset into training and testing sets
+# X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
 
-scaler = StandardScaler()
-x_train = scaler.fit_transform(X_train)
-x_test = scaler.fit_transform(X_test)
+# scaler = StandardScaler()
+# x_train = scaler.fit_transform(X_train)
+# x_test = scaler.fit_transform(X_test)
 
 # Train a logistic regression model (you can replace this with your actual training code)
 c_space = np.logspace(-5, 8, 15)
 param_grid = {'C': c_space}
 clf = LogisticRegression(random_state=0)
 clf_cv = GridSearchCV(clf, param_grid, cv = 5)
-clf_cv.fit(x_train, y_train)
+clf_cv.fit(X,Y)
 
 
 # Function to preprocess input data and make predictions
