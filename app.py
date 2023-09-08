@@ -20,25 +20,25 @@ cols = ["Age","Gender_Female","Gender_Male","Location_Los Angeles","Location_Chi
 X = train_data[cols]
 Y = train_data['Churn']
 
-# # Split the dataset into training and testing sets
-# X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.3, random_state=0)
 
 scaler = StandardScaler()
-# x_train = scaler.fit_transform(X_train)
-# x_test = scaler.fit_transform(X_test)
+x_train = scaler.fit_transform(X_train)
+x_test = scaler.fit_transform(X_test)
 
 # Train a logistic regression model (you can replace this with your actual training code)
 c_space = np.logspace(-5, 8, 15)
 param_grid = {'C': c_space}
 clf = LogisticRegression(random_state=0)
 clf_cv = GridSearchCV(clf, param_grid, cv = 5)
-clf_cv.fit(X,Y)
+clf_cv.fit(x_train,y_train)
 
 
 # Function to preprocess input data and make predictions
 def predict_churn(customer_id, name, age, gender, location, subscription_length_months, monthly_bill, total_usage_gb):
     # Create a DataFrame from the input data
-    input_data = pd.DataFrame({
+    dct={
         'Age': [age],
         'Gender_Female': [1 if gender == "Female" else 0],  # One-hot encoding for Gender
         'Gender_Male': [1 if gender == "Male" else 0],
@@ -50,13 +50,15 @@ def predict_churn(customer_id, name, age, gender, location, subscription_length_
         'Subscription_Length_Months': [subscription_length_months],
         'monthly bill': [monthly_bill],
         'Total_usage_GB': [total_usage_gb]
-    })
+    }
+    dct = {k:[v] for k,v in dct.items()}  
+    input_data = pd.DataFrame(dct)
     
 # Scale the input data using the same scaler used during training
-    input_scaled = scaler.fit_transform(input_data)  # Use the pre-fitted scaler
+    scaled_features = scaler.transform(input_data.values)  # Use the pre-fitted scaler
 
     # Make predictions
-    churn_rate = clf_cv.predict(input_scaled)
+    churn_rate = clf_cv.predict(scaled_features)
 
     return churn_rate[0]
 
